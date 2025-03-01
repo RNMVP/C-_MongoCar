@@ -2,28 +2,14 @@
 using MongoDB.Driver;
 using MongoDBCars.Models;
 
-namespace MongoDBCars.Repositories
+namespace MongoDBCars.Repositories.CarRepo
 {
     public class CarRepository : ICarRepository
     {
         private readonly IMongoCollection<Car> _carCollection;
 
-        public CarRepository(IOptions<CarStoreDatabaseSettings> carStoreOpt)
-        {
-
-            if (carStoreOpt == null || carStoreOpt.Value == null)
-            {
-                Console.WriteLine("carStoreOpt ou carStoreOpt.Value está nulo!");
-                throw new ArgumentNullException("Configuração do banco faltante");
-            }
-            else
-            {
-                var mongoClient = new MongoClient(carStoreOpt.Value.ConnectionString);
-
-                var mongoDatabase = mongoClient.GetDatabase(carStoreOpt.Value.DatabaseName);
-
-                _carCollection = mongoDatabase.GetCollection<Car>(carStoreOpt.Value.CarsCollectionName);
-            }
+        public CarRepository(MongoDbContext context) {
+            _carCollection = context.Cars;
         }
 
         public async Task Create(Car car)
@@ -40,11 +26,13 @@ namespace MongoDBCars.Repositories
 
         public async Task DeleteCar(string id) => await _carCollection.DeleteOneAsync(c => c.Id!.Equals(id));
 
-        public async Task<List<Car>> FindAll() {
+        public async Task<List<Car>> FindAll()
+        {
             try
             {
-                return await _carCollection.Find(_ => true).ToListAsync(); 
-            }catch(Exception ex)
+                return await _carCollection.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return [];
