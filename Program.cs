@@ -4,6 +4,7 @@ using MongoDBCars.Models.config;
 using MongoDBCars.Repositories;
 using MongoDBCars.Repositories.CarRepo;
 using MongoDBCars.Services.Car;
+using MongoDBCars.Services.MapperProfiles;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ builder.Services.AddScoped<ICarRepository, CarRepository>();
 
 // Services
 builder.Services.AddScoped<ICarService, CarService>();
+
+builder.Services.AddAutoMapper(typeof(MapperProfiles));
 
 builder.Services.AddAuthentication(options =>
 {

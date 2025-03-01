@@ -1,4 +1,5 @@
-﻿using MongoDBCars.DTOs;
+﻿using AutoMapper;
+using MongoDBCars.DTOs;
 using MongoDBCars.Enums;
 using MongoDBCars.Models.users;
 using MongoDBCars.Repositories.CustomerRepo;
@@ -6,9 +7,12 @@ using MongoDBCars.Services.User.DTOs;
 
 namespace MongoDBCars.Services.User
 {
-    public class CustomerService(ICustomerRepo customerRepo) : ICustomerService
+    public class CustomerService(
+        IMapper mapper,
+        ICustomerRepo customerRepo) : ICustomerService
     {
-        ICustomerRepo _customerRepo = customerRepo;
+        private readonly ICustomerRepo _customerRepo = customerRepo;
+        private readonly IMapper _mapper = mapper;
         public async Task<Result<CustomerOutput>> Create(CreateCustomerInput input)
         {
             List<ApiError> errors = [];
@@ -26,12 +30,22 @@ namespace MongoDBCars.Services.User
 
             await _customerRepo.Create(createdCustomer!);
 
-
+            return _mapper.Map<CustomerOutput>(createdCustomer);
         }
 
-        public Task<Result<CustomerOutput>> Delete(string id)
+        public async Task<Result<CustomerOutput>> Delete(string id)
         {
-            throw new NotImplementedException();
+            List<ApiError> errors = [];
+            var findedCustomer = await _customerRepo.RequestById(id);
+            if (findedCustomer is null)
+                errors.Add(ApiError.CUSTOMER_NOT_FOUND);
+
+            if(errors.Count > 0) return errors;
+
+            await _customerRepo.Delete(id);
+
+            return _mapper.Map<CustomerOutput>(findedCustomer);
+            
         }
 
         public Task<Result<List<CustomerOutput>>> GetAll()
@@ -39,9 +53,16 @@ namespace MongoDBCars.Services.User
             throw new NotImplementedException();
         }
 
-        public Task<Result<CustomerOutput>> GetCustomerById(string id)
+        public async Task<Result<CustomerOutput>> GetCustomerById(string id)
         {
-            throw new NotImplementedException();
+            List<ApiError> errors = [];
+            var findedCustomer = await _customerRepo.RequestById(id);
+            if (findedCustomer is null)
+                errors.Add(ApiError.CUSTOMER_NOT_FOUND);
+
+            if (errors.Count > 0) return errors;
+
+            return _mapper.Map<CustomerOutput>(findedCustomer);
         }
 
         public Task<Result<CustomerOutput>> Update(UpdateCustomerInput input)

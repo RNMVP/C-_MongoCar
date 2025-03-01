@@ -6,38 +6,40 @@ namespace MongoDBCars.Enums
     {
         // Generic
         [Description("Some unexpected thing heppened")]
-        SOME_THING_GOES_WRONG = 0,
+        SOME_THING_GOES_WRONG,
 
         // Cars
         [Description("Brand is a required field")]
-        BRAND_IS_REQUIRED = 1,
+        BRAND_IS_REQUIRED,
         [Description("Car Plate is a required field")]
-        CARPLATE_IS_REQUIRED = 2,
+        CARPLATE_IS_REQUIRED,
         [Description("There is not any car refeerenced by id passed")]
-        CAR_NOT_FOUND_ID = 3,
+        CAR_NOT_FOUND_ID,
         [Description("Customer name is a required field")]
-        Customer_NAME_EMPTY = 4,
+        Customer_NAME_EMPTY,
         [Description("Customer email is a required field")]
-        Customer_EMAIL_EMPTY = 5,
+        Customer_EMAIL_EMPTY,
         [Description("Password must have at least 8 characters, 1 lower an uppercase char and 1 special char")]
-        STRONG_PASSWORD_REQUIRED = 6,
+        STRONG_PASSWORD_REQUIRED,
         [Description("Customer password is a required field")]
-        PASSWORD_REQUIRED = 7,
+        PASSWORD_REQUIRED,
         [Description("Email should be a valid one")]
-        INVALID_EMAIL = 8,
+        INVALID_EMAIL,
         [Description("Car plate should be a valid one")]
-        INVALID_CAR_PLATE = 9,
+        INVALID_CAR_PLATE,
 
         // User
 
         // Customer
+        [Description("Customer not found")]
+        CUSTOMER_NOT_FOUND,
 
         // Employee
         [Description("Salary is a required field")]
-        SALARY_IS_REQUIRED = 10,
+        SALARY_IS_REQUIRED,
         [Description("Salary must be greater than zero")]
-        NEGATIVE_SALARY = 11,
+        NEGATIVE_SALARY,
         [Description("Position is a required field")]
-        POSITION_IS_REQUIRED = 12,
+        POSITION_IS_REQUIRED,
     }
 }
