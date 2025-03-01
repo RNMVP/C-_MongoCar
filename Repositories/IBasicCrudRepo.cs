@@ -5,7 +5,7 @@
         Task Create(T entity);
         Task<List<T>> Request();
         Task Update(string id, T entity);
-        Task Delete(T entity);
-        Task<T> RequestById();
+        Task Delete(string id);
+        Task<T> RequestById(string id);
     }
 }
