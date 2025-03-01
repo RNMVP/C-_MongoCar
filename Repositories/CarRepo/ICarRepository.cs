@@ -1,6 +1,6 @@
 ﻿using MongoDBCars.Models;
 
-namespace MongoDBCars.Repositories
+namespace MongoDBCars.Repositories.CarRepo
 {
     public interface ICarRepository
     {

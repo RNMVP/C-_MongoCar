@@ -1,7 +1,7 @@
 ﻿
 using MongoDBCars.DTOs;
 using MongoDBCars.Enums;
-using MongoDBCars.Repositories;
+using MongoDBCars.Repositories.CarRepo;
 using CarType = MongoDBCars.Models.Car;
 
 namespace MongoDBCars.Services.Car

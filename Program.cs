@@ -1,20 +1,27 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MongoDBCars.Models;
+using MongoDBCars.Models.config;
 using MongoDBCars.Repositories;
+using MongoDBCars.Repositories.CarRepo;
 using MongoDBCars.Services.Car;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Mapping configuration by refletion
 builder.Services.Configure<CarStoreDatabaseSettings>(
     builder.Configuration.GetSection("CarStoreDatabase"));
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 Console.WriteLine($"Ambiente atual: {environment}");
 
+// DbContext
+builder.Services.AddScoped<MongoDbContext>();
+
+// Repositories
 builder.Services.AddScoped<ICarRepository, CarRepository>();
+
+// Services
 builder.Services.AddScoped<ICarService, CarService>();
 
 builder.Services.AddAuthentication(options =>
@@ -41,13 +48,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 //builder.Services.AddIdentityServer()
-//    .AddInMemoryClients(new List<Client>
+//    .AddInMemoryCustomers(new List<Customer>
 //    {
-//        new Client
+//        new Customer
 //        {
-//            ClientId = "client",
-//            AllowedGrantTypes = GrantTypes.ClientCredentials,
-//            ClientSecrets =
+//            CustomerId = "Customer",
+//            AllowedGrantTypes = GrantTypes.CustomerCredentials,
+//            CustomerSecrets =
 //            {
 //                new Secret("secret".Sha256())
 //            },
