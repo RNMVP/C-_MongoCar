@@ -1,6 +1,7 @@
-﻿using MongoDBCars.DTOs;
-using MongoDBCars.Enums;
+﻿using MongoDBCars.Enums;
 using MongoDBCars.Utils.Validations;
+
+using BC = BCrypt.Net.BCrypt;
 
 namespace MongoDBCars.Models.users
 {
@@ -8,7 +9,7 @@ namespace MongoDBCars.Models.users
     {
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
+        public string HashedPassword { get; set; } = null!;
         public User() { }
 
         protected static List<ApiError> Validation(string? name, string? email, string? password)
@@ -43,6 +44,11 @@ namespace MongoDBCars.Models.users
             }
 
             return errors;
+        }
+
+        protected static string HashPassword(string password) 
+        {
+            return BC.HashPassword(password);
         }
     }
 }
