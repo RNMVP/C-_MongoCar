@@ -30,7 +30,7 @@ namespace MongoDBCars.Repositories
 
         public async Task Delete(string id)
         {
-            var filter = Builders<T>.Filter.Eq("id", id);
+            var filter = Builders<T>.Filter.Eq("Id", id);
             await _collection.DeleteOneAsync(filter);
         }
 

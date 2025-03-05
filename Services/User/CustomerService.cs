@@ -48,9 +48,10 @@ namespace MongoDBCars.Services.User
             
         }
 
-        public Task<Result<List<CustomerOutput>>> GetAll()
+        public async Task<Result<List<CustomerOutput>>> GetAll()
         {
-            throw new NotImplementedException();
+            var allCustomers = await _customerRepo.Request();
+            return _mapper.Map<List<CustomerOutput>>(allCustomers);
         }
 
         public async Task<Result<CustomerOutput>> GetCustomerById(string id)
@@ -65,9 +66,34 @@ namespace MongoDBCars.Services.User
             return _mapper.Map<CustomerOutput>(findedCustomer);
         }
 
-        public Task<Result<CustomerOutput>> Update(UpdateCustomerInput input)
+        public async Task<Result<CustomerOutput>> Update(UpdateCustomerInput input)
         {
-            throw new NotImplementedException();
+            List<ApiError> errors = [];
+
+            var findedCustomer = await _customerRepo.RequestById(input.Id);
+            if(findedCustomer is null)
+            {
+                errors.Add(ApiError.CUSTOMER_NOT_FOUND);
+                return errors;
+            }
+
+            var updateResponse = findedCustomer.Update(input.Name, input.Email);
+
+            if (updateResponse.ItsFailure)
+            {
+                errors.AddRange(updateResponse.Errors);
+            }
+
+            if (errors.Count > 0)
+            {
+                return errors;
+            }
+
+            
+
+            await _customerRepo.Update(input.Id, updateResponse.Value!);
+
+            return _mapper.Map<CustomerOutput>(updateResponse.Value);
         }
     }
 }

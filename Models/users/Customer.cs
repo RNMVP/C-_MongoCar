@@ -27,5 +27,16 @@ namespace MongoDBCars.Models.users
             };
             return Customer;
         }
+
+        public Result<Customer> Update(string name, string email)
+        {
+            List<ApiError> errors = Validation(name, email, null, true);
+            if(errors.Count > 0) return errors;
+
+            Name = name;
+            Email = email;
+
+            return this;
+        }
     }
 }

@@ -26,5 +26,29 @@ namespace MongoDBCars.Controllers
             if(getResult.ItsFailure) return BadRequest(ApiResponse<CustomerOutput>.GenerateFailure(getResult.Errors));
             return Ok(ApiResponse<CustomerOutput>.GenerateSuccess(getResult.Value!));
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllCustomers()
+        {
+            var getResult = await _customerService.GetAll();
+            if(getResult.ItsFailure) return BadRequest(ApiResponse<List<CustomerOutput>>.GenerateFailure(getResult.Errors));
+            return Ok(ApiResponse<List<CustomerOutput>>.GenerateSuccess(getResult.Value!));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateCustomer([FromBody] UpdateCustomerInput input)
+        {
+            var updateResult = await _customerService.Update(input);
+            if(updateResult.ItsFailure) return BadRequest(ApiResponse<CustomerOutput>.GenerateFailure(updateResult.Errors));
+            return Ok(ApiResponse<CustomerOutput>.GenerateSuccess(updateResult.Value!));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCustomer(string id)
+        {
+            var deleteResult = await _customerService.Delete(id);
+            if(deleteResult.ItsFailure) return NotFound(ApiResponse<CustomerOutput>.GenerateFailure(deleteResult.Errors));
+            return Ok(ApiResponse<CustomerOutput>.GenerateSuccess(deleteResult.Value!));
+        }
     }
 }

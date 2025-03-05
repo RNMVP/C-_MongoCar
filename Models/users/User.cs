@@ -12,7 +12,7 @@ namespace MongoDBCars.Models.users
         public string HashedPassword { get; set; } = null!;
         public User() { }
 
-        protected static List<ApiError> Validation(string? name, string? email, string? password)
+        protected static List<ApiError> Validation(string? name, string? email, string? password, bool isUpdate=false)
         {
             List<ApiError> errors = [];
 
@@ -31,18 +31,20 @@ namespace MongoDBCars.Models.users
                     errors.Add(ApiError.INVALID_EMAIL);
                 }
             }
-            if (string.IsNullOrWhiteSpace(password))
+            if (!isUpdate)
             {
-                errors.Add(ApiError.PASSWORD_REQUIRED);
-            }
-            else
-            {
-                if (!password.IsValidPassword())
+                if (string.IsNullOrWhiteSpace(password))
                 {
-                    errors.Add(ApiError.STRONG_PASSWORD_REQUIRED);
+                    errors.Add(ApiError.PASSWORD_REQUIRED);
+                }
+                else
+                {
+                    if (!password.IsValidPassword())
+                    {
+                        errors.Add(ApiError.STRONG_PASSWORD_REQUIRED);
+                    }
                 }
             }
-
             return errors;
         }
 
