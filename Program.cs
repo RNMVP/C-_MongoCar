@@ -3,8 +3,10 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDBCars.Models.config;
 using MongoDBCars.Repositories;
 using MongoDBCars.Repositories.CarRepo;
+using MongoDBCars.Repositories.CustomerRepo;
 using MongoDBCars.Services.Car;
 using MongoDBCars.Services.MapperProfiles;
+using MongoDBCars.Services.User;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +23,11 @@ builder.Services.AddScoped<MongoDbContext>();
 
 // Repositories
 builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 
 // Services
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfiles));
 

@@ -29,7 +29,7 @@ namespace MongoDBCars.Models.users
             {
                 Name = name!,
                 Email = email!,
-                Password = password!,
+                HashedPassword = password!,
                 Salary = (float) salary!,
                 Position = Position!
             };
