@@ -32,7 +32,23 @@ namespace MongoDBCars.Controllers
         {
             var requestResult = await _employeeService.RequestAll();
             if (requestResult.ItsFailure) return NotFound(ApiResponse<EmployeeOutput>.GenerateFailure(requestResult.Errors));
-            return Ok(requestResult.Value);
+            return Ok(ApiResponse<List<EmployeeOutput>>.GenerateSuccess(requestResult.Value!));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateEmployee(UpdateEmployeeInput input)
+        {
+            var updateResult = await _employeeService.Update(input);
+            if (updateResult.ItsFailure) return BadRequest(ApiResponse<EmployeeOutput>.GenerateFailure(updateResult.Errors));
+            return Ok(ApiResponse<EmployeeOutput>.GenerateSuccess(updateResult.Value!));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteEmployee(string id)
+        {
+            var deleteResult = await _employeeService.DeleteById(id);
+            if (deleteResult.ItsFailure) return NotFound(ApiResponse<EmployeeOutput>.GenerateFailure(deleteResult.Errors));
+            return Ok(ApiResponse<EmployeeOutput>.GenerateSuccess(deleteResult.Value!));
         }
     }
 }
