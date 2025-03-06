@@ -13,6 +13,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "allowAny",
+                      policy =>
+                      {
+                          policy
+                          .AllowAnyHeader()
+                          .AllowAnyOrigin()
+                          .AllowAnyMethod();
+                      });
+});
+
 // Mapping configuration by refletion
 builder.Services.Configure<CarStoreDatabaseSettings>(
     builder.Configuration.GetSection("CarStoreDatabase"));
@@ -88,6 +100,11 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("allowAny");
+}
 
 //app.UseIdentityServer();
 
