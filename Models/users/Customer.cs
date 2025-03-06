@@ -1,5 +1,6 @@
 ﻿using MongoDBCars.DTOs;
 using MongoDBCars.Enums;
+using MongoDBCars.Enums.UserTypes;
 using System.Collections.ObjectModel;
 
 namespace MongoDBCars.Models.users
@@ -14,7 +15,7 @@ namespace MongoDBCars.Models.users
         public static Result<Customer> Create(string? name, string? email, string? telephone, string? password)
         {
 
-            List<ApiError> errors = Validation(name, email, password);
+            List<ApiError> errors = Validation(name, email, password, UserType.CUSTOMER);
             if (errors.Count > 0)
                 return errors;
 
@@ -23,14 +24,15 @@ namespace MongoDBCars.Models.users
                 Name = name!,
                 Email = email!,
                 Telephone = telephone,
-                HashedPassword = HashPassword(password!)
+                HashedPassword = HashPassword(password!),
+                UserType = UserType.CUSTOMER,
             };
             return Customer;
         }
 
         public Result<Customer> Update(string name, string email)
         {
-            List<ApiError> errors = Validation(name, email, null, true);
+            List<ApiError> errors = Validation(name, email, null, UserType.CUSTOMER, true);
             if(errors.Count > 0) return errors;
 
             Name = name;

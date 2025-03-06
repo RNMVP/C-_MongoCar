@@ -1,4 +1,5 @@
 ﻿using MongoDBCars.Enums;
+using MongoDBCars.Enums.UserTypes;
 using MongoDBCars.Utils.Validations;
 
 using BC = BCrypt.Net.BCrypt;
@@ -10,9 +11,10 @@ namespace MongoDBCars.Models.users
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string HashedPassword { get; set; } = null!;
+        public UserType UserType { get; set; }
         public User() { }
 
-        protected static List<ApiError> Validation(string? name, string? email, string? password, bool isUpdate=false)
+        protected static List<ApiError> Validation(string? name, string? email, string? password, UserType? userType, bool isUpdate=false)
         {
             List<ApiError> errors = [];
 
@@ -22,13 +24,22 @@ namespace MongoDBCars.Models.users
             }
             if (string.IsNullOrWhiteSpace(email))
             {
-                errors.Add(ApiError.Customer_EMAIL_EMPTY);
+                errors.Add(ApiError.CUSTOMER_EMAIL_EMPTY);
             }
             else
             {
                 if (!email.IsValidEmail())
                 {
                     errors.Add(ApiError.INVALID_EMAIL);
+                }
+            }
+            if (userType is null) 
+                errors.Add(ApiError.USER_TYPE_REQUIRED);
+            else 
+            {
+                if (!Enum.IsDefined(typeof(UserType), userType))
+                {
+                    errors.Add(ApiError.USER_TYPE_NOT_DEFINED);
                 }
             }
             if (!isUpdate)

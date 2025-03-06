@@ -1,5 +1,6 @@
 ﻿using MongoDBCars.DTOs;
 using MongoDBCars.Enums;
+using MongoDBCars.Enums.UserTypes;
 
 namespace MongoDBCars.Models.users
 {
@@ -17,7 +18,7 @@ namespace MongoDBCars.Models.users
             float? salary,
             string? position) 
         {
-            List<ApiError> errors = Validation(name, email, password);
+            List<ApiError> errors = Validation(name, email, password, UserType.EMPLOYEE);
             errors.AddRange(EmployeeValidation(salary, position));
 
             if (errors.Count > 0) 
@@ -31,7 +32,8 @@ namespace MongoDBCars.Models.users
                 Email = email!,
                 HashedPassword = password!,
                 Salary = (float) salary!,
-                Position = position!
+                Position = position!,
+                UserType = UserType.EMPLOYEE
             };
 
             return employee;
@@ -39,7 +41,7 @@ namespace MongoDBCars.Models.users
 
         public Result<Employee> Update(string name, string email, float salary, string position)
         {
-            var errors = Validation(name, email, "", true);
+            var errors = Validation(name, email, "", UserType.EMPLOYEE, true);
             errors.AddRange(EmployeeValidation(salary, position));
             if (errors.Count > 0) return errors;
             Name = name;

@@ -18,7 +18,7 @@ namespace MongoDBCars.Enums
         [Description("Customer name is a required field")]
         Customer_NAME_EMPTY,
         [Description("Customer email is a required field")]
-        Customer_EMAIL_EMPTY,
+        CUSTOMER_EMAIL_EMPTY,
         [Description("Password must have at least 8 characters, 1 lower an uppercase char and 1 special char")]
         STRONG_PASSWORD_REQUIRED,
         [Description("Customer password is a required field")]
@@ -29,6 +29,8 @@ namespace MongoDBCars.Enums
         INVALID_CAR_PLATE,
 
         // User
+        USER_TYPE_REQUIRED,
+        USER_TYPE_NOT_DEFINED,
 
         // Customer
         [Description("Customer not found")]
