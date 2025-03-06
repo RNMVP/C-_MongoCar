@@ -6,26 +6,37 @@ namespace MongoDBCars.Models.users
 {
     public class Customer : User
     {
+        public string? Telephone { get; set; }
         public Collection<Car> Cars { get; set; } = [];
 
         private Customer() { }
 
-        public Result<Customer> Create(string? name, string? email, string? password)
+        public static Result<Customer> Create(string? name, string? email, string? telephone, string? password)
         {
 
             List<ApiError> errors = Validation(name, email, password);
             if (errors.Count > 0)
-            {
                 return errors;
-            }
 
             Customer Customer = new()
             {
                 Name = name!,
                 Email = email!,
-                Password = password!
+                Telephone = telephone,
+                HashedPassword = HashPassword(password!)
             };
             return Customer;
+        }
+
+        public Result<Customer> Update(string name, string email)
+        {
+            List<ApiError> errors = Validation(name, email, null, true);
+            if(errors.Count > 0) return errors;
+
+            Name = name;
+            Email = email;
+
+            return this;
         }
     }
 }

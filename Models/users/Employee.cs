@@ -10,7 +10,7 @@ namespace MongoDBCars.Models.users
 
         public Employee() { }
 
-        public Result<Employee> Create(
+        public static Result<Employee> Create(
             string? name,
             string? email, 
             string? password,
@@ -18,7 +18,7 @@ namespace MongoDBCars.Models.users
             string? position) 
         {
             List<ApiError> errors = Validation(name, email, password);
-            errors.AddRange(CustomerValidation(salary, position));
+            errors.AddRange(EmployeeValidation(salary, position));
 
             if (errors.Count > 0) 
             {
@@ -29,15 +29,27 @@ namespace MongoDBCars.Models.users
             {
                 Name = name!,
                 Email = email!,
-                Password = password!,
+                HashedPassword = password!,
                 Salary = (float) salary!,
-                Position = Position!
+                Position = position!
             };
 
             return employee;
         }
 
-        private List<ApiError> CustomerValidation(float? salary, string? position)
+        public Result<Employee> Update(string name, string email, float salary, string position)
+        {
+            var errors = Validation(name, email, "", true);
+            errors.AddRange(EmployeeValidation(salary, position));
+            if (errors.Count > 0) return errors;
+            Name = name;
+            Email = email;
+            Salary = salary;
+            Position = position;
+            return this;
+        }
+
+        private static List<ApiError> EmployeeValidation(float? salary, string? position)
         {
             var errors = new List<ApiError>();
 

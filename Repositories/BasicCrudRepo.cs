@@ -1,10 +1,8 @@
 ﻿using MongoDB.Driver;
-using MongoDBCars.DTOs;
-using MongoDBCars.Models;
 
 namespace MongoDBCars.Repositories
 {
-    public abstract class BasicCrudRepo<T> where T : Entity<T>
+    public abstract class BasicCrudRepo<T> where T : class
     {
         protected readonly IMongoCollection<T> _collection;
 
@@ -32,8 +30,14 @@ namespace MongoDBCars.Repositories
 
         public async Task Delete(string id)
         {
-            var filter = Builders<T>.Filter.Eq("id", id);
+            var filter = Builders<T>.Filter.Eq("Id", id);
             await _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<T> RequestById(string id)
+        {
+            var filter = Builders<T>.Filter.Eq("Id", id);
+            return await _collection.Find(filter).FirstOrDefaultAsync();
         }
     }
 }

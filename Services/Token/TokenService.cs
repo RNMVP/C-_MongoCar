@@ -15,7 +15,7 @@ namespace MongoDBCars.Services.Token
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
-                claims: new[] { new Claim(JwtRegisteredClaimNames.Sub, "user_id") },
+                claims: [new Claim(JwtRegisteredClaimNames.Sub, "user_id")],
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials
             );
