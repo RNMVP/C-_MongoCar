@@ -1,7 +1,7 @@
 ﻿using MongoDBCars.DTOs;
 using MongoDBCars.Services.User.DTOs;
 
-namespace MongoDBCars.Services.User
+namespace MongoDBCars.Services.User.Customer
 {
     public interface ICustomerService
     {

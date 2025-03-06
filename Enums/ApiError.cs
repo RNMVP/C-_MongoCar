@@ -41,5 +41,7 @@ namespace MongoDBCars.Enums
         NEGATIVE_SALARY,
         [Description("Position is a required field")]
         POSITION_IS_REQUIRED,
+        [Description("Employeer not found")]
+        EMPLOYEE_NOT_FOUND,
     }
 }

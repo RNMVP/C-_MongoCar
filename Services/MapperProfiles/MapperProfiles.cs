@@ -9,6 +9,8 @@ namespace MongoDBCars.Services.MapperProfiles
         public MapperProfiles() 
         {
             CreateMap<Customer, CustomerOutput>();
+            CreateMap<Employee, EmployeeOutput>();
         }
+
     }
 }

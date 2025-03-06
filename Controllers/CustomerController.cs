@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDBCars.DTOs;
-using MongoDBCars.Services.User;
+using MongoDBCars.Services.User.Customer;
 using MongoDBCars.Services.User.DTOs;
 
 namespace MongoDBCars.Controllers

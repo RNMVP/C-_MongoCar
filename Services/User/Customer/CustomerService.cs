@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MongoDBCars.DTOs;
 using MongoDBCars.Enums;
-using MongoDBCars.Models.users;
+using CustomerType = MongoDBCars.Models.users.Customer;
 using MongoDBCars.Repositories.CustomerRepo;
 using MongoDBCars.Services.User.DTOs;
 
-namespace MongoDBCars.Services.User
+namespace MongoDBCars.Services.User.Customer
 {
     public class CustomerService(
         IMapper mapper,
@@ -16,8 +16,8 @@ namespace MongoDBCars.Services.User
         public async Task<Result<CustomerOutput>> Create(CreateCustomerInput input)
         {
             List<ApiError> errors = [];
-            var customerResult = Customer.Create(input.Name, input.Email, input.Telephone, input.Password);
-            
+            var customerResult = CustomerType.Create(input.Name, input.Email, input.Telephone, input.Password);
+
             if (customerResult.ItsFailure)
             {
                 errors.AddRange(customerResult.Errors);
@@ -40,12 +40,12 @@ namespace MongoDBCars.Services.User
             if (findedCustomer is null)
                 errors.Add(ApiError.CUSTOMER_NOT_FOUND);
 
-            if(errors.Count > 0) return errors;
+            if (errors.Count > 0) return errors;
 
             await _customerRepo.Delete(id);
 
             return _mapper.Map<CustomerOutput>(findedCustomer);
-            
+
         }
 
         public async Task<Result<List<CustomerOutput>>> GetAll()
@@ -71,7 +71,7 @@ namespace MongoDBCars.Services.User
             List<ApiError> errors = [];
 
             var findedCustomer = await _customerRepo.RequestById(input.Id);
-            if(findedCustomer is null)
+            if (findedCustomer is null)
             {
                 errors.Add(ApiError.CUSTOMER_NOT_FOUND);
                 return errors;
@@ -89,7 +89,7 @@ namespace MongoDBCars.Services.User
                 return errors;
             }
 
-            
+
 
             await _customerRepo.Update(input.Id, updateResponse.Value!);
 

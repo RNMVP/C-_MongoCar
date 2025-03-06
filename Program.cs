@@ -4,9 +4,11 @@ using MongoDBCars.Models.config;
 using MongoDBCars.Repositories;
 using MongoDBCars.Repositories.CarRepo;
 using MongoDBCars.Repositories.CustomerRepo;
+using MongoDBCars.Repositories.EmployeeRepo;
 using MongoDBCars.Services.Car;
 using MongoDBCars.Services.MapperProfiles;
-using MongoDBCars.Services.User;
+using MongoDBCars.Services.User.Customer;
+using MongoDBCars.Services.User.Employee;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,10 +26,12 @@ builder.Services.AddScoped<MongoDbContext>();
 // Repositories
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 
 // Services
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfiles));
 
